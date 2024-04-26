@@ -1,0 +1,63 @@
+import { AboutSlint, Button, VerticalBox, ScrollView } from "std-widgets.slint";
+
+export component AppWindow inherits Window {
+    in property <string> completion;
+    callback send-message(string, string);
+
+    title: "Chat gpt-3.5-turbo";
+    width: 800px;
+    height: 600px;
+
+    VerticalBox {
+        Rectangle {
+            background: lightgray;
+            clip: true;
+            system_prompt := TextInput {
+                font-size: 16px;
+                single-line: false;
+                wrap: word-wrap;
+                text: "system";
+            }
+        }
+        
+        Rectangle {
+            background: lightgray;
+            clip: true;
+            user_prompt := TextInput {
+                font-size: 16px;
+                single-line: false;
+                wrap: word-wrap;
+                text: "user";
+            }
+        }
+
+        Button {
+            text: "Confirm";
+            primary: true;
+            clicked => {
+                root.send-message(system_prompt.text, user_prompt.text);
+            }
+        }
+
+        Rectangle {
+            background: lightgray;
+            clip: true;
+            ScrollView {
+                VerticalLayout {
+                    TextInput { 
+                        font-size: 16px;
+                        read-only: true;
+                        single-line: false;
+                        wrap: word-wrap;
+                        text: root.completion;
+                    }
+                }
+            }
+        }
+
+        Rectangle {
+            height: 100px;
+            AboutSlint { }
+        }
+    }
+}
